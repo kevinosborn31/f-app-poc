@@ -8,12 +8,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post("/sms", async (req, res) => {
-  // Twilio sends fields like Body, From
   const from = req.body.From;
   const body = req.body.Body || "";
   try {
     const twilioResponse = await handleSms(from, body);
-    // Twilio expects TwiML or plain text with proper headers:
     res.type("text/xml").send(twilioResponse);
   } catch (err) {
     console.error(err);
